@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Cleanup') {
             steps {
-                echo ""Cleaning the workspace..."
+                echo "Cleaning the workspace..."
                 cleanWs()
             }
         }
