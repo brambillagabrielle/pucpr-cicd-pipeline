@@ -1,17 +1,16 @@
-# Projeto DevOps: Pipeline de CI/CD com Jenkins e Docker
+# DevOps Project: CI/CD Pipeline with Jenkins and Docker
 
 <img src="https://img.shields.io/badge/Jenkins-49728B?style=for-the-badge&logo=jenkins&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white">
 
-## Introdução
-Este projeto foi desenvolvimento como proposta de trabalho avaliativo da disciplina **Cisco DevNet Associate - DevOps**, realizada na Pós-graduação de Engenharia de Serviços e Sistemas de Cloud Computing (PUCPR).
+## About the Project
 
-Teve como objetivo praticar alguns conceitos estudados teoriamente na matéria, através do desenvolvimento de uma pipeline de CI/CD utilizando Jenkins e Docker, contendo os seguintes estágios:
+This project was developed as proposed in the **Cisco DevNet Associate - DevOps** course from PUCPR's Cloud Computing specialization. The objectives of this work were to practice theoretical concepts learned during the course by implementing a CI/CD Pipeline using Jenkins and Docker, with the following stages:
 1. Cleanup
 2. Checkout
 3. Build
 4. Delivery
 
-### Estrutura do Projeto
+### Project Structure
 
 ```
 ├── Jenkinsfile
@@ -24,40 +23,40 @@ Teve como objetivo praticar alguns conceitos estudados teoriamente na matéria, 
     └── requirements.txt
 ```
 
-## Preparação
+## Prerequisites
 
-### Subida do Jenkins localmente
+### Local Jenkins Setup
 
-Para realizar as atividades do trabalho, foi necessário, como preparação das ferramentas necessárias, a subida do Jenkins no ambiente local, de modo a poder criar e executar a pipeline desenvolvida.
+To perform the project activities, it was necessary to prepare the required tools by **setting up Jenkins in the local environment**, enabling the creation and execution of the developed pipeline.
 
-Para isso, foi utilizado o comando abaixo no terminal do Linux WSL, para permitir o *build* e demais operações do Docker dentro do container do Jenkins:
+For this, the following command was used in the Linux WSL terminal, allowing **Docker build and other operations within the Jenkins container**:
 
 ```
 docker run -d --name jenkins -u root -p 8080:8080 -p 50000:50000 -v jenkins-data:/var/jenkins_home -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:lts-jdk17
 ```
 
-Para validar a subida e pegar as credenciais do usuário administrador inicial, os comandos foram acompanhados com: ```docker logs -f jenkins```
+To validate the setup and retrieve the initial administrator user credentials, the commands were monitored with: `docker logs -f jenkins`
 
-Após esse container subir com sucesso, o Jenkins pôde ser acesso através do navegador no endereço https://localhost:8080
+After the container successfully started, Jenkins could be accessed through the browser at `http://localhost:8080`
 
-### Repositório e Token de Acesso do Docker Hub
+### Docker Hub Repository and Access Token
 
-A próxima ferramenta que será envolvida na atividade é o [Docker Hub](hub.docker.com/), para *push* das imagens que serão construídas nos últimos estágios da pipeline. 
+The next tool involved in the activity is [Docker Hub](hub.docker.com/), for **pushing the images** that will be built in the final stages of the pipeline. 
 
-Foram necessários, para tanto, a criação de dois repositórios para cada uma das imagens (db e web), além de um Token de acesso, o qual foi adicionado como credencial de acesso no Jenkins, com permissões de "Read, Write, Delete".
+For this purpose, it was necessary to create **two repositories for each of the images (db and web)**, as well as an access token, which was added as an **access credential in Jenkins** with "Read, Write, Delete" permissions.
 
-## Desenvolvimento
+## Development
 
-### Estrutura da Pipeline
+### Pipeline Structure
 
 #### 1. Cleanup
 
-O primeiro estágio, chamado "Cleanup", corresponde à limpeza do Woskspace (diretório de trabalho do Jenkins), utilizando o plugin [Workspace Cleanup](https://plugins.jenkins.io/ws-cleanup):
+The first stage, called "Cleanup", corresponds to **cleaning the Workspace (Jenkins working directory)** using the **Workspace Cleanup plugin**:
 
 ```
 stage('Cleanup') {
     steps {
-        echo "Realizando a limpeza do Workspace..."
+        echo "Cleaning the workspace..."
         cleanWs()
     }
 }
@@ -65,12 +64,12 @@ stage('Cleanup') {
 
 #### 2. Checkout
 
-A seguir, o "Checkout" realiza um clone de um repositório Git indicado, com o conteúdo de uma determinada *branch*, através do plugin [Git](https://www.jenkins.io/doc/pipeline/steps/git):
+Next, "Checkout" performs a **clone of a specified Git repository** with the content from a specific branch, using the Git plugin:
 
 ```
 stage('Checkout') {
     steps {
-        echo "Realizando o Checkout do repositório do Git..."
+        echo "Performing Git repository checkout..."
         git branch: 'master', url: 'https://github.com/brambillagabrielle/pucpr-devops-project'
     }
 }
@@ -78,14 +77,14 @@ stage('Checkout') {
 
 #### 3. Build
 
-Após isso, com o conteúdo do repositório no diretório de trabalho do Jenkins, o passo "Build" realiza a construção de ambas as imagens com o Docker.
+After that, with the repository content in the Jenkins working directory, the "Build" step performs the **construction of both images with Docker**.
 
-Conforme indicado pela estrutura do projeto, são indicados cada um dos 2 diretórios, que possuem Dockerfiles indicando o passo a passo para empacotamento da aplicação e do DB, e passando um "nome:tag" baseado no repositório do Docker Hub e o número do build do Jenkins:
+As indicated by the project structure, each of the 2 directories are specified, which contain **Dockerfiles indicating the step-by-step process for packaging the application and the DB**, and passing a "name:tag" based on the **Docker Hub repository and the Jenkins build number**:
 
 ```
 stage('Build') {
     steps {
-        echo "Realizando o Build das imagens do Docker..."
+        echo "Building Docker images..."
         sh "docker build -t brambillagabi/imagem-db:${BUILD_NUMBER} ./db"
         sh "docker build -t brambillagabi/imagem-web:${BUILD_NUMBER} ./web"
     }
@@ -94,12 +93,12 @@ stage('Build') {
 
 #### 4. Delivery
 
-Por fim, após as imagens estarem prontas, o último estágio, de "Delivery", é utilizado para envio das imagens aos repositórios do Docker Hub, realizando o login com as credenciais criadas e registradas para esse fim:
+Finally, after the images are ready, the last stage, "Delivery", is used to **send the images to the Docker Hub repositories**, performing login with the credentials created and registered for this purpose:
 
 ```
 stage('Delivery') {
     steps {
-        echo "Realizando o Delivery das imagens do Docker..."
+        echo "Delivering Docker images..."
         withCredentials([usernamePassword(credentialsId: 'docker-token',
                 usernameVariable: 'DOCKER_USER',
                 passwordVariable: 'DOCKER_PASS')]) {
