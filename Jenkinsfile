@@ -3,26 +3,26 @@ pipeline {
     stages {
         stage('Cleanup') {
             steps {
-                echo "Realizando a limpeza do Workspace..."
+                echo ""Cleaning the workspace..."
                 cleanWs()
             }
         }
         stage('Checkout') {
             steps {
-                echo "Realizando o Checkout do repositório do Git..."
+                echo "Performing Git repository checkout..."
                 git branch: 'master', url: 'https://github.com/brambillagabrielle/pucpr-devops-project'
             }
         }
         stage('Build') {
             steps {
-                echo "Realizando o Build das imagens do Docker..."
+                echo "Building Docker images..."
                 sh "docker build -t brambillagabi/imagem-db:${BUILD_NUMBER} ./db"
                 sh "docker build -t brambillagabi/imagem-web:${BUILD_NUMBER} ./web"
             }
         }
         stage('Delivery') {
             steps {
-                echo "Realizando o Delivery das imagens do Docker..."
+                echo "Delivering Docker images..."
                 withCredentials([usernamePassword(credentialsId: 'docker-token',
                                    usernameVariable: 'DOCKER_USER',
                                    passwordVariable: 'DOCKER_PASS')]) {
