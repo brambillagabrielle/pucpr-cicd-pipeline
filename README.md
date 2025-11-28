@@ -47,7 +47,7 @@ For this purpose, it was necessary to create **two repositories for each of the 
 
 ## Pipeline Structure
 
-#### 1. Cleanup
+### 1. Cleanup
 
 The first stage, called "Cleanup", corresponds to **cleaning the Workspace (Jenkins working directory)** using the **Workspace Cleanup plugin**:
 
@@ -60,7 +60,7 @@ stage('Cleanup') {
 }
 ```
 
-#### 2. Checkout
+### 2. Checkout
 
 Next, "Checkout" performs a **clone of a specified Git repository** with the content from a specific branch, using the Git plugin:
 
@@ -73,7 +73,7 @@ stage('Checkout') {
 }
 ```
 
-#### 3. Build
+### 3. Build
 
 After that, with the repository content in the Jenkins working directory, the "Build" step performs the **construction of both images with Docker**.
 
@@ -89,7 +89,7 @@ stage('Build') {
 }
 ```
 
-#### 4. Delivery
+### 4. Delivery
 
 Finally, after the images are ready, the last stage, "Delivery", is used to **send the images to the Docker Hub repositories**, performing login with the credentials created and registered for this purpose:
 
