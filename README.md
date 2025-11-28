@@ -45,9 +45,7 @@ The next tool involved in the activity is [Docker Hub](hub.docker.com/), for **p
 
 For this purpose, it was necessary to create **two repositories for each of the images (db and web)**, as well as an access token, which was added as an **access credential in Jenkins** with "Read, Write, Delete" permissions.
 
-## Development
-
-### Pipeline Structure
+## Pipeline Structure
 
 #### 1. Cleanup
 
