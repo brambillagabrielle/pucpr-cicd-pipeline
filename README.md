@@ -1,4 +1,4 @@
-# DevOps Project: CI/CD Pipeline with Jenkins and Docker
+# CI/CD Pipeline with Jenkins and Docker
 
 ![Jenkins](https://img.shields.io/badge/Jenkins-49728B?style=for-the-badge&logo=jenkins&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
