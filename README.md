@@ -25,7 +25,7 @@ This project was developed as proposed in the **Cisco DevNet Associate - DevOps*
 
 ## Prerequisites
 
-### Local Jenkins Setup
+### 🖥️ Local Jenkins Setup
 
 To perform the project activities, it was necessary to prepare the required tools by **setting up Jenkins in the local environment**, enabling the creation and execution of the developed pipeline.
 
@@ -39,7 +39,7 @@ To validate the setup and retrieve the initial administrator user credentials, t
 
 After the container successfully started, Jenkins could be accessed through the browser at `http://localhost:8080`
 
-### Docker Hub Repository and Access Token
+### 🔑 Docker Hub Repository and Access Token
 
 The next tool involved in the activity is [Docker Hub](hub.docker.com/), for **pushing the images** that will be built in the final stages of the pipeline. 
 
@@ -47,7 +47,7 @@ For this purpose, it was necessary to create **two repositories for each of the 
 
 ## Pipeline Structure
 
-### 1. Cleanup
+### 🧹 Cleanup
 
 The first stage, called "Cleanup", corresponds to **cleaning the Workspace (Jenkins working directory)** using the **Workspace Cleanup plugin**:
 
@@ -60,7 +60,7 @@ stage('Cleanup') {
 }
 ```
 
-### 2. Checkout
+### ⏬ Checkout
 
 Next, "Checkout" performs a **clone of a specified Git repository** with the content from a specific branch, using the Git plugin:
 
@@ -73,7 +73,7 @@ stage('Checkout') {
 }
 ```
 
-### 3. Build
+### 📦 Build
 
 After that, with the repository content in the Jenkins working directory, the "Build" step performs the **construction of both images with Docker**.
 
@@ -89,7 +89,7 @@ stage('Build') {
 }
 ```
 
-### 4. Delivery
+### 📫 Delivery
 
 Finally, after the images are ready, the last stage, "Delivery", is used to **send the images to the Docker Hub repositories**, performing login with the credentials created and registered for this purpose:
 
