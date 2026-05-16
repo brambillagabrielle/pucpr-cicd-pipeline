@@ -4,7 +4,7 @@
 
 ## About the Project
 
-This project was developed as proposed in the **Cisco DevNet Associate - DevOps** course from the Postgraduate Program in Cloud Computing Services and Systems Engineering (PUCPR).
+This project was developed as proposed in the **Cisco DevNet Associate - DevOps course** from the Postgraduate Program in Cloud Computing Services and Systems Engineering (PUCPR).
 
 The objectives of this work were to practice theoretical concepts learned during the course by **implementing a CI/CD Pipeline using Jenkins and Docker**, with the following stages:
 1. Cleanup
